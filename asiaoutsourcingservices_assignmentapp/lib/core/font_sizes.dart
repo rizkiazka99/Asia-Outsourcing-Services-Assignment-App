@@ -73,8 +73,8 @@ bodyXsGrey({color = textGrey, fontSize, fontFamily}) {
 }
 
 //button
-buttonLg({color = textBlack, fontFamily}) {
-  return TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: fontFamily);
+buttonLg({color = textBlack, fontFamily, fontWeight = FontWeight.bold}) {
+  return TextStyle(color: color, fontWeight: fontWeight, fontSize: 16, fontFamily: fontFamily);
 }
 
 buttonMd({color = textBlack, fontWeight = FontWeight.bold, fontFamily}) {

@@ -16,6 +16,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   PreferredSizeWidget appBar() {
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: backgroundColor,
       title: Text(
         'MARKETPEDIA',

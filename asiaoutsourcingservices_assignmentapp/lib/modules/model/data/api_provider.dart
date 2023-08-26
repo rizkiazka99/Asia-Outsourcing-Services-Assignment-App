@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:asiaoutsourcingservices_assignmentapp/helpers/constants.dart';
 import 'package:dio/dio.dart';
 
@@ -9,7 +8,7 @@ class _Methods {
  Future dioPost(url, data) async {
     try {
       final response = await dio.post(
-        baseUrl + url,
+        Constants.baseUrl + url,
         data: jsonEncode(data)
       );
 
@@ -20,8 +19,7 @@ class _Methods {
           'message': response.data['message'],
           'data': unstringifiedData
         };
-
-        print(fixedResponse);
+        
         return fixedResponse;
       } else {
         print(response.data);

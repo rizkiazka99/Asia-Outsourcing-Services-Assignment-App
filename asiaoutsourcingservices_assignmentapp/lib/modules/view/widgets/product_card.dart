@@ -1,6 +1,7 @@
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/core/font_sizes.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/products_response.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/product_rating.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/router/screens.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -39,30 +40,6 @@ class _ProductCardState extends State<ProductCard> {
     );
   }
 
-  Widget productRating() {
-    return Container(
-      width: MediaQuery.of(context).size.width / 6,
-      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-      decoration: BoxDecoration(
-          color: primaryColor, borderRadius: BorderRadius.circular(4)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.star_border_rounded,
-            color: Colors.white,
-            size: 20,
-          ),
-          const SizedBox(width: 2),
-          Text(
-            '4.5',
-            style: bodyMd(color: Colors.white),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget addButton() {
     return InkWell(
       onTap: () {},
@@ -84,16 +61,19 @@ class _ProductCardState extends State<ProductCard> {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Flexible(
-              child: Text(
-                widget.products!.data.table[widget.index].productName,
-                style: h5(fontWeight: FontWeight.normal),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              child: Container(
+                margin: const EdgeInsets.only(right: 35),
+                child: Text(
+                  widget.products!.data.table[widget.index].productName,
+                  style: h5(fontWeight: FontWeight.normal),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
             InkWell(
               onTap: () {},
-              child: const Icon(Icons.favorite_border_outlined),
+              child: const Icon(Icons.favorite_border_rounded),
             )
           ]),
           const SizedBox(height: 4),
@@ -105,7 +85,7 @@ class _ProductCardState extends State<ProductCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              productRating(),
+              productRating(context),
               addButton()
             ],
           )
@@ -130,7 +110,8 @@ class _ProductCardState extends State<ProductCard> {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
-          color: mainGrey, borderRadius: BorderRadius.circular(8)
+          color: mainGrey, 
+          borderRadius: BorderRadius.circular(8)
         ),
         child: Row(
           children: [

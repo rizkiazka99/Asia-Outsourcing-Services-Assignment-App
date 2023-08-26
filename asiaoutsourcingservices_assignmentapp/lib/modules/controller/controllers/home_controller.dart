@@ -1,3 +1,4 @@
+import 'package:asiaoutsourcingservices_assignmentapp/helpers/constants.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/model/data/repository.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/products_response.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -86,16 +87,8 @@ class HomeController extends GetxController {
   }
 
   Future<ProductsResponse?> getProducts() async {
-    var data = {
-      'KEY': 'YhNnM/2K++gp/FMWA+m0Pg==',
-      'pmethod': 'Get Product',
-      'pemail': 'JK',
-      'pwhere6': '1',
-      'pwhere7': '4'
-    };
-
     isLoading = true;
-    ProductsResponse? res = await _repository.getProducts(data);
+    ProductsResponse? res = await _repository.getProducts(Constants.data);
     products = res;
     isLoading = false;
 
