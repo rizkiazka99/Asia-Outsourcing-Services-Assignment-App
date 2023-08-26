@@ -14,6 +14,30 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  PreferredSizeWidget appBar() {
+    return AppBar(
+      title: Text(
+        'MARKETPEDIA',
+        style: h4(),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {}, 
+          icon: const Icon(
+            Icons.notifications_outlined
+          )
+        )
+      ],
+    );
+  }
+
+  Widget body(DashboardController controller) {
+    return Obx(() => PageStorage(
+      bucket: controller.bucket, 
+      child: controller.pages[controller.selectedIndex]
+    ));
+  }
+
   Widget bottomAppBarItem(int selectedIndex, DashboardController controller, String iconAsset, String name) {
     return Obx(() => InkWell(
       borderRadius: BorderRadius.circular(80),
@@ -43,73 +67,64 @@ class _DashboardState extends State<Dashboard> {
     ));
   }
 
+  Widget bottomAppBar(DashboardController controller) {
+    return Theme(
+      data: ThemeData(
+        useMaterial3: false,
+      ),
+      child: BottomAppBar(
+        height: 80,
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        color: Colors.black,
+        shadowColor: Colors.black,
+        surfaceTintColor: Colors.black,
+        elevation: 8,
+        notchMargin: 5,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            bottomAppBarItem(0, controller, Ikonate.home_alt, 'Home'),
+            bottomAppBarItem(1, controller, Ikonate.search, 'Search'),
+            bottomAppBarItem(2, controller, Ikonate.list_alt, 'History'),
+            bottomAppBarItem(3, controller, Ikonate.user, 'Profile')
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget floatingActionButton() {
+    return InkWell(
+      borderRadius: BorderRadius.circular(100),
+      onTap: () {
+        Get.toNamed(Routes.CART);  
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.shopping_cart_outlined,
+          color: Colors.white,
+          size: 40,
+        ),
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     DashboardController controller = Get.find<DashboardController>();
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'MARKETPEDIA',
-          style: h4(),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {}, 
-            icon: const Icon(
-              Icons.notifications_outlined
-            )
-          )
-        ],
-      ),
-      body: Obx(() => PageStorage(
-        bucket: controller.bucket, 
-        child: controller.pages[controller.selectedIndex]
-      )),
-      bottomNavigationBar:Theme(
-        data: ThemeData(
-          useMaterial3: false,
-        ),
-        child: BottomAppBar(
-          height: 80,
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-          color: Colors.black,
-          shadowColor: Colors.black,
-          surfaceTintColor: Colors.black,
-          elevation: 8,
-          notchMargin: 5,
-          shape: const CircularNotchedRectangle(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              bottomAppBarItem(0, controller, Ikonate.home_alt, 'Home'),
-              bottomAppBarItem(1, controller, Ikonate.search, 'Search'),
-              bottomAppBarItem(2, controller, Ikonate.list_alt, 'History'),
-              bottomAppBarItem(3, controller, Ikonate.user, 'Profile')
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: InkWell(
-        borderRadius: BorderRadius.circular(100),
-        onTap: () {
-          Get.toNamed(Routes.CART);
-          
-        },
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(
-            Icons.shopping_cart_outlined,
-            color: Colors.white,
-            size: 40,
-          ),
-        )
-      ),
+      appBar: appBar(),
+      body: body(controller),
+      bottomNavigationBar: bottomAppBar(controller),
+      floatingActionButton: floatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

@@ -1,0 +1,1 @@
+const baseUrl = 'https://bs.aossalestrax.co.id/TestProgrammer_Services/api';
