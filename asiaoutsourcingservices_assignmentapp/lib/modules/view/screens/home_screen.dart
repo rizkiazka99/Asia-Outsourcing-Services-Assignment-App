@@ -1,9 +1,12 @@
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/core/font_sizes.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/home_controller.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/product_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:icony/icony_gameicons.dart';
@@ -136,7 +139,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 15),
                   categories(controller),
                   const SizedBox(height: 25),
-                  sectionTitle('New Arrivals')
+                  sectionTitle('New Arrivals'),
+                  const SizedBox(height: 15),
+                  Obx(() => controller.isLoading ? const Text('Loading...') : Column(
+                    children: List.generate(controller.products!.data.table.length, (index) {
+                        return ProductCard(
+                          products: controller.products!,
+                          index: index,
+                        );
+                      }
+                    ),
+                  ))
                 ],
               ),
             ),
