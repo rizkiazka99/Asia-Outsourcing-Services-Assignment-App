@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xFFF87B45);
+const mainGrey = Color(0xFFF0F0F0);
+const selectedGrey = Color(0xFFD9D9D9);
 const disabledButton = Color(0xFFDADADA);
+const backgroundColor = Color(0xFFFAFAFA);
 
 dynamic warningColor = Colors.yellow[700];
 dynamic successColor = Colors.green;

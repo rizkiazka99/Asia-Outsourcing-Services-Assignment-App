@@ -1,3 +1,4 @@
+import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -6,7 +7,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -29,7 +30,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -52,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
