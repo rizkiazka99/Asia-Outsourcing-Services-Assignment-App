@@ -174,7 +174,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ],
                     )),
                     Obx(() => !controller.isLoading ? Text(
-                      '\$ ${double.parse(controller.productDetail!.productValue)}',
+                      'Rp ${double.parse(controller.productDetail!.productValue)}',
                       style: h4(fontWeight: FontWeight.w500),
                     ) : Container(
                       margin: const EdgeInsets.only(top: 8),

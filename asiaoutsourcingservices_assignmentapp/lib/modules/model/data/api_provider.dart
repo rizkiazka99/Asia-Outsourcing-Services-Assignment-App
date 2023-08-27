@@ -13,11 +13,11 @@ class _Methods {
       );
 
       if (response.data['data'] != null) {
-        var unstringifiedData = json.decode(response.data['data']);
+        var destringifiedData = json.decode(response.data['data']);
         final fixedResponse = {
           'success': response.data['success'],
           'message': response.data['message'],
-          'data': unstringifiedData
+          'data': destringifiedData
         };
         
         return fixedResponse;
@@ -34,5 +34,9 @@ class _Methods {
 class Endpoints extends _Methods {
   Future getProducts(data) async {
     return await dioPost('/GetMasterData', data);
+  }
+
+  Future insertSales(data) async {
+    return await dioPost('/UpdateData', data);
   }
 }

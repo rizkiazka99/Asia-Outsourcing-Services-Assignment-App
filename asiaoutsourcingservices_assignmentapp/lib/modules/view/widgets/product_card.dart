@@ -78,7 +78,7 @@ class _ProductCardState extends State<ProductCard> {
           ]),
           const SizedBox(height: 4),
           Text(
-            '\$ ${double.parse(widget.products!.data.table[widget.index].productValue)}',
+            'Rp ${double.parse(widget.products!.data.table[widget.index].productValue)}',
             style: h5(),
           ),
           const SizedBox(height: 4),

@@ -6,6 +6,7 @@ const selectedGrey = Color(0xFFD9D9D9);
 const disabledButton = Color(0xFFDADADA);
 const backgroundColor = Color(0xFFFAFAFA);
 const skeletonBarColor = Color.fromARGB(255, 209, 208, 208);
+const billingInformationColor = Color(0xFF4E4E4E);
 
 dynamic warningColor = Colors.yellow[700];
 dynamic successColor = Colors.green;

@@ -50,14 +50,14 @@ class SQLHelper {
     ));
 
     for(var i = 0; i < items.length; i++) {
-      print(items[i].id);
-      print(items[i].productId);
-      print(items[i].productName);
-      print(items[i].productPhoto);
-      print(items[i].productValue);
-      print(items[i].productSize);
+      //print(items[i].id);
+      //print(items[i].productId);
+      //print(items[i].productName);
+      //print(items[i].productPhoto);
+      //print(items[i].productValue);
+      //print(items[i].productSize);
       print(items[i].quantity);
-      print(items[i].createdAt);
+      //print(items[i].createdAt);
     }
     return items;
   }

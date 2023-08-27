@@ -134,16 +134,4 @@ class ProductDetailController extends GetxController {
       defaultSnackbar('Oops!', 'Something went wrong, please try again');
     }
   }
-
-  bool doesSpecificItemExist(String productId, String productSize) {
-    List query = items.where((element) => 
-      element.productId == productId && element.productSize == productSize
-    ).toList();
-
-    if (query.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }
