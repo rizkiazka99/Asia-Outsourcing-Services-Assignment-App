@@ -9,6 +9,8 @@ class DefaultButton extends StatelessWidget {
   final Color buttonColor;
   final String buttonText;
   final Color buttonTextColor;
+  final bool useIcon;
+  final IconData? icon;
 
   const DefaultButton({
     super.key,
@@ -17,7 +19,9 @@ class DefaultButton extends StatelessWidget {
     this.height, 
     this.buttonColor = primaryColor, 
     required this.buttonText,
-    this.buttonTextColor = Colors.white
+    this.buttonTextColor = Colors.white,
+    required this.useIcon,
+    this.icon
   });
 
   @override
@@ -31,7 +35,23 @@ class DefaultButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10), 
           color: buttonColor
         ),
-        child: Center(
+        child: useIcon ? Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 15),
+            Text(
+              buttonText,
+              style: buttonLg(
+                color: buttonTextColor,
+                fontWeight: FontWeight.w500
+              ),
+            ),
+          ],
+        ) : Center(
           child: Text(
             buttonText,
             style: buttonLg(

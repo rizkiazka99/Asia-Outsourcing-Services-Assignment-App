@@ -1,8 +1,10 @@
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/core/font_sizes.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/internet_controller.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/product_detail_controller.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/back_button.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/default_button.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/no_internet_indicator.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/product_rating.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/skeleton_loader.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/router/screens.dart';
@@ -84,6 +86,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           const SizedBox(width: 15),
           Expanded(
             child: Obx(() => DefaultButton(
+              useIcon: false,
               onTap: () {
                 if (!controller.isLoading) {
                   int index = controller.items.indexWhere((element) => 
@@ -113,136 +116,146 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     ProductDetailController controller = Get.find<ProductDetailController>();
+    InternetController internetController = Get.find<InternetController>();
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      extendBodyBehindAppBar: true,
-      appBar: appBar(controller),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Obx(() => !controller.isLoading ? CachedNetworkImage(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2,
-                fit: BoxFit.cover,
-                imageUrl: controller.productDetail!.productPhoto,
-                fadeInDuration: const Duration(milliseconds: 300),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                placeholder: (context, url) => const SpinKitFoldingCube(
-                  color: primaryColor,
-                  size: 45,
-                ),
-              ) : SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2,
-                child: const SpinKitFoldingCube(
-                  color: primaryColor,
-                  size: 45,
-                ),
-              )),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        !controller.isLoading ? Flexible(
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 35),
-                            child: Text(
-                              controller.productDetail!.productName,
-                              style: h4(fontWeight: FontWeight.w600),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ) : CustomizableSkeletonLoader(
-                          height: 25,
-                          width: MediaQuery.of(context).size.width / 2,
-                        ),
-                        !controller.isLoading ? productRating(context)
-                            : CustomizableSkeletonLoader(
-                              height: 25, 
-                              width: MediaQuery.of(context).size.width / 6
-                            )
-                      ],
-                    )),
-                    Obx(() => !controller.isLoading ? Text(
-                      'Rp ${double.parse(controller.productDetail!.productValue)}',
-                      style: h4(fontWeight: FontWeight.w500),
-                    ) : Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: CustomizableSkeletonLoader(
-                        height: 25,
-                        width: MediaQuery.of(context).size.width / 3,
+    return RefreshIndicator(
+      onRefresh: () {
+        return controller.getProductDetail();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        extendBodyBehindAppBar: true,
+        appBar: appBar(controller),
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Obx(() => !controller.isLoading ? CachedNetworkImage(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 2,
+                  fit: BoxFit.cover,
+                  imageUrl: controller.productDetail!.productPhoto,
+                  fadeInDuration: const Duration(milliseconds: 300),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  placeholder: (context, url) => const SpinKitFoldingCube(
+                    color: primaryColor,
+                    size: 45,
+                  ),
+                ) : SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: const SpinKitFoldingCube(
+                    color: primaryColor,
+                    size: 45,
+                  ),
+                )),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() => !internetController.connectedToInternet 
+                          ? noInternetIndicator(context)
+                          : const SizedBox.shrink()
                       ),
-                    )),
-                    const SizedBox(height: 35),
-                    Obx(() => !controller.isLoading ? Text(
-                      '- ${controller.productDetail!.productDescription}',
-                      style: bodyMd(color: Colors.black),
-                      textAlign: TextAlign.justify,
-                    ) : CustomizableSkeletonLoader(
-                      height: MediaQuery.of(context).size.height / 8,
-                      width: MediaQuery.of(context).size.width,
-                    )),
-                    const SizedBox(height: 35),
-                    Obx(() => !controller.isLoading ? Text(
-                      'Size',
-                      style: h4_5(fontWeight: FontWeight.w500),
-                    ) : CustomizableSkeletonLoader(
-                      height: 15, 
-                      width: MediaQuery.of(context).size.width / 6 
-                    )),
-                    const SizedBox(height: 8),
-                    Obx(() => !controller.isLoading ? Row(
-                      children: List.generate(controller.sizes.length, (index) => Obx(() => InkWell(
-                        onTap: () {
-                          controller.selectedSize = controller.sizes[index];
-                        },
-                        child: Container(
-                          height: 45,
-                          width: MediaQuery.of(context).size.width / 8,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: controller.selectedSize != controller.sizes[index]
-                                ? mainGrey : Colors.black,
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 1.5
-                            )
+                      Obx(() => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          !controller.isLoading ? Flexible(
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 35),
+                              child: Text(
+                                controller.productDetail!.productName,
+                                style: h4(fontWeight: FontWeight.w600),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ) : CustomizableSkeletonLoader(
+                            height: 25,
+                            width: MediaQuery.of(context).size.width / 2,
                           ),
-                          child: Center(
-                            child: Text(
-                              controller.sizes[index],
-                              style: h5(
-                                color: controller.selectedSize != controller.sizes[index]
-                                    ? Colors.black : Colors.white,
-                                fontWeight: FontWeight.w500
+                          !controller.isLoading ? productRating(context)
+                              : CustomizableSkeletonLoader(
+                                height: 25, 
+                                width: MediaQuery.of(context).size.width / 6
+                              )
+                        ],
+                      )),
+                      Obx(() => !controller.isLoading ? Text(
+                        'Rp ${double.parse(controller.productDetail!.productValue)}',
+                        style: h4(fontWeight: FontWeight.w500),
+                      ) : Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        child: CustomizableSkeletonLoader(
+                          height: 25,
+                          width: MediaQuery.of(context).size.width / 3,
+                        ),
+                      )),
+                      const SizedBox(height: 35),
+                      Obx(() => !controller.isLoading ? Text(
+                        '- ${controller.productDetail!.productDescription}',
+                        style: bodyMd(color: Colors.black),
+                        textAlign: TextAlign.justify,
+                      ) : CustomizableSkeletonLoader(
+                        height: MediaQuery.of(context).size.height / 8,
+                        width: MediaQuery.of(context).size.width,
+                      )),
+                      const SizedBox(height: 35),
+                      Obx(() => !controller.isLoading ? Text(
+                        'Size',
+                        style: h4_5(fontWeight: FontWeight.w500),
+                      ) : CustomizableSkeletonLoader(
+                        height: 15, 
+                        width: MediaQuery.of(context).size.width / 6 
+                      )),
+                      const SizedBox(height: 8),
+                      Obx(() => !controller.isLoading ? Row(
+                        children: List.generate(controller.sizes.length, (index) => Obx(() => InkWell(
+                          onTap: () {
+                            controller.selectedSize = controller.sizes[index];
+                          },
+                          child: Container(
+                            height: 45,
+                            width: MediaQuery.of(context).size.width / 8,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: controller.selectedSize != controller.sizes[index]
+                                  ? mainGrey : Colors.black,
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1.5
+                              )
+                            ),
+                            child: Center(
+                              child: Text(
+                                controller.sizes[index],
+                                style: h5(
+                                  color: controller.selectedSize != controller.sizes[index]
+                                      ? Colors.black : Colors.white,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ))),
-                    ) : CustomizableSkeletonLoader(
-                      height: 45, 
-                      width: MediaQuery.of(context).size.width / 2
-                    ))
-                  ],
-                ),
-              )
-            ],
+                        ))),
+                      ) : CustomizableSkeletonLoader(
+                        height: 45, 
+                        width: MediaQuery.of(context).size.width / 2
+                      ))
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: bottomAppBar(controller)
       ),
-      bottomNavigationBar: bottomAppBar(controller)
     );
   }
 }

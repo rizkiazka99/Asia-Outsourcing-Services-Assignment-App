@@ -22,10 +22,10 @@ class _Methods {
         
         return fixedResponse;
       } else {
-        print(response.data);
         return response.data;
       }
     } catch(err) {
+      print(err);
       print('Something went wrong');
     }
   }

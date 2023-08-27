@@ -1,4 +1,3 @@
-import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/cart_response.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/screens/home_screen.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/screens/other_screens.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,7 @@ import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
   final PageStorageBucket bucket = PageStorageBucket();
-
+  
   RxInt _selectedIndex = 0.obs;
   int get selectedIndex => _selectedIndex.value;
   set selectedIndex(int selectedIndex) =>
@@ -19,6 +18,7 @@ class DashboardController extends GetxController {
 
   @override
   void onClose() {
+    print('dashboardController disposed');
     super.onClose();
   }
 

@@ -18,7 +18,7 @@ class AppScreens {
       page: () => const Dashboard(),
       bindings: [
         DashboardBinding(),
-        HomeBinding()
+        HomeBinding(),
       ]
     ),
     GetPage(

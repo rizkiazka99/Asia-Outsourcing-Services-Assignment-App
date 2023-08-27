@@ -83,6 +83,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    print('homeController disposed');
     super.onClose();
   }
 

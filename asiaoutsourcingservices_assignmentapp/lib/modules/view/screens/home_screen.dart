@@ -1,6 +1,9 @@
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/core/font_sizes.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/dashboard_controller.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/home_controller.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/internet_controller.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/no_internet_indicator.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/product_card.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/skeleton_loader.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -115,44 +118,54 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.find<HomeController>();
+    InternetController internetController = Get.put(InternetController());
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  carousel(controller),
-                  const SizedBox(height: 15),
-                  sectionTitle('Top Categories'),
-                  const SizedBox(height: 15),
-                  categories(controller),
-                  const SizedBox(height: 25),
-                  sectionTitle('New Arrivals'),
-                  const SizedBox(height: 15),
-                  Obx(() => controller.isLoading ? Column(
-                    children: List.generate(3, (index) => const SkeletonLoader()),
-                  ) : Column(
-                    children: List.generate(controller.products!.data.table.length, (index) {
-                        return ProductCard(
-                          products: controller.products!,
-                          index: index,
-                        );
-                      }
+    return RefreshIndicator(
+      onRefresh: () {
+        return controller.getProducts();
+      },
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        body: SafeArea(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Obx(() => !internetController.connectedToInternet
+                        ? noInternetIndicator(context)
+                        : const SizedBox.shrink()
                     ),
-                  ))
-                ],
+                    carousel(controller),
+                    const SizedBox(height: 15),
+                    sectionTitle('Top Categories'),
+                    const SizedBox(height: 15),
+                    categories(controller),
+                    const SizedBox(height: 25),
+                    sectionTitle('New Arrivals'),
+                    const SizedBox(height: 15),
+                    Obx(() => controller.isLoading ? Column(
+                      children: List.generate(3, (index) => const SkeletonLoader()),
+                    ) : Column(
+                      children: List.generate(controller.products!.data.table.length, (index) {
+                          return ProductCard(
+                            products: controller.products!,
+                            index: index,
+                          );
+                        }
+                      ),
+                    ))
+                  ],
+                ),
               ),
             ),
-          ),
-        )
+          )
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/helpers/constants.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/helpers/global_functions.dart';
@@ -8,7 +9,6 @@ import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/produ
 import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/table_response.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/custom_snackbar.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/loader_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
@@ -56,6 +56,7 @@ class ProductDetailController extends GetxController {
 
   @override
   void onClose() {
+    print('productDetailController disposed');
     super.onClose();
   }
 
@@ -81,6 +82,7 @@ class ProductDetailController extends GetxController {
       loaderDialog(
         const SpinKitFoldingCube(
           color: primaryColor,
+          size: 35,
         ), 
         'Please wait...'
       );
