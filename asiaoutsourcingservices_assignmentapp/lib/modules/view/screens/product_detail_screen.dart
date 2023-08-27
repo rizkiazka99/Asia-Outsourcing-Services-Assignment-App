@@ -1,8 +1,11 @@
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/core/font_sizes.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/product_detail_controller.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/model/data/sqlite_provider.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/cart_response.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/back_button.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/default_button.dart';
+import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/loader_dialog.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/product_rating.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/skeleton_loader.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/router/screens.dart';
@@ -85,7 +88,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           const SizedBox(width: 15),
           Expanded(
             child: Obx(() => DefaultButton(
-              onTap: () {}, 
+              onTap: () {
+                if (!controller.isLoading) {
+                  controller.addToCart();
+                } else {
+
+                }
+              }, 
               buttonText: 'Add to Cart',
               buttonColor: controller.isLoading ? disabledButton
                   : primaryColor,
@@ -190,7 +199,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     Obx(() => !controller.isLoading ? Row(
                       children: List.generate(controller.sizes.length, (index) => Obx(() => InkWell(
                         onTap: () {
-                          controller.selectedSize = index;
+                          controller.selectedSize = controller.sizes[index];
                         },
                         child: Container(
                           height: 45,
@@ -198,7 +207,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: controller.selectedSize != index
+                            color: controller.selectedSize != controller.sizes[index]
                                 ? mainGrey : Colors.black,
                             border: Border.all(
                               color: Colors.black,
@@ -209,7 +218,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             child: Text(
                               controller.sizes[index],
                               style: h5(
-                                color: controller.selectedSize != index
+                                color: controller.selectedSize != controller.sizes[index]
                                     ? Colors.black : Colors.white,
                                 fontWeight: FontWeight.w500
                               ),
