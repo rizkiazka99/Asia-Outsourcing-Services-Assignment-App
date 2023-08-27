@@ -9,3 +9,8 @@ Hasil Pengerjaan "Test Skill Programmer Flutter" dari Asia Outsourcing Services
 
 ### .apk File URL
 https://drive.google.com/drive/folders/1ciaAwXQU_YK5alQlGip1fHI3496b3LAl
+
+### Screenshots
+![Alt text](<1 - Asia Outsourcing Services - Flutter Programmer Skill Test.png>)
+
+![Alt text](<2 - Asia Outsourcing Services - Flutter Programmer Skill Test.png>)
