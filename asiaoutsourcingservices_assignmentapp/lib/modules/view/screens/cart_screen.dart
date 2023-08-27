@@ -34,7 +34,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
           const SizedBox(height: 15),
           Text(
-            'You don\'t have anything in your cart, a little bit of shopping woudn\'t hurt :)',
+            'You don\'t have anything in your cart, a little bit of shopping wouldn\'t hurt :)',
             style: h5(fontWeight: FontWeight.w500),
             textAlign: TextAlign.center,
           )
@@ -174,7 +174,18 @@ class _CartScreenState extends State<CartScreen> {
         useIcon: true,
         onTap: () {
           if (internetController.connectedToInternet && controller.items.isNotEmpty) {
-            controller.initiateCheckout();
+            Get.dialog(
+              ConfirmationDialog(
+                title: 'Before you proceed...', 
+                content: 'Are you sure you want to checkout your cart? (Just in case you accidentaly pressed checkout or you\'d like to add more stuffs)', 
+                onConfirmation: () {
+                  controller.initiateCheckout();
+                }, 
+                onCancellation: () {
+                  Get.back();
+                }
+              )
+            );
           }
         },
         icon: Icons.shopping_cart_outlined,
