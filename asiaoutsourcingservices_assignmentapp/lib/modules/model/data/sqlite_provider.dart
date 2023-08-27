@@ -4,8 +4,10 @@ import 'package:sqflite/sqflite.dart' as sql;
 class SQLHelper {
   static Future<void> createTable(sql.Database database) async {
     await database.execute("""CREATE TABLE items(
-      productId TEXT PRIMARY KEY NOT NULL,
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      productId TEXT,
       productName TEXT,
+      productPhoto TEXT,
       productValue TEXT,
       productSize TEXT,
       quantity INTEGER,
@@ -37,35 +39,47 @@ class SQLHelper {
     final db = await SQLHelper.db();
     final maps = await db.query('items', orderBy: 'createdAt');
     List<Cart> items = List.generate(maps.length, (index) => Cart(
+      id: int.parse(maps[index]['id'].toString()),
       productId: maps[index]['productId'].toString(), 
-      productName: maps[index]['productName'].toString(), 
+      productName: maps[index]['productName'].toString(),
+      productPhoto: maps[index]['productPhoto'].toString(),
       productValue: maps[index]['productValue'].toString(), 
       productSize: maps[index]['productSize'].toString(), 
       quantity: int.parse(maps[index]['quantity'].toString()), 
       createdAt: maps[index]['createdAt'].toString()
     ));
 
+    for(var i = 0; i < items.length; i++) {
+      print(items[i].id);
+      print(items[i].productId);
+      print(items[i].productName);
+      print(items[i].productPhoto);
+      print(items[i].productValue);
+      print(items[i].productSize);
+      print(items[i].quantity);
+      print(items[i].createdAt);
+    }
     return items;
   }
 
-  static Future<int> updateItem(String productId, Cart item) async {
+  static Future<int> updateItem(int? id, Cart item) async {
     final db = await SQLHelper.db();
     int result = await db.update(
       'items', 
       item.toMap(),
-      where: "productId = ?",
-      whereArgs: [productId]
+      where: "id = ?",
+      whereArgs: [id]
     );
 
     return result;
   }
 
-  static Future<int> deleteItem(String productId) async {
+  static Future<int> deleteItem(int? id) async {
     final db = await SQLHelper.db();
     int result = await db.delete(
       'items',
-      where: "productId = ?",
-      whereArgs: [productId]
+      where: "id = ?",
+      whereArgs: [id]
     );
 
     return result;

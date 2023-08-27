@@ -1,11 +1,8 @@
 import 'package:asiaoutsourcingservices_assignmentapp/core/colors.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/core/font_sizes.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/controller/controllers/product_detail_controller.dart';
-import 'package:asiaoutsourcingservices_assignmentapp/modules/model/data/sqlite_provider.dart';
-import 'package:asiaoutsourcingservices_assignmentapp/modules/model/models/cart_response.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/back_button.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/default_button.dart';
-import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/loader_dialog.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/product_rating.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/modules/view/widgets/skeleton_loader.dart';
 import 'package:asiaoutsourcingservices_assignmentapp/router/screens.dart';
@@ -13,7 +10,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:icony/icony_ikonate.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
@@ -90,7 +86,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Obx(() => DefaultButton(
               onTap: () {
                 if (!controller.isLoading) {
-                  controller.addToCart();
+                  int index = controller.items.indexWhere((element) => 
+                    element.productId == controller.productDetail!.productId
+                        && element.productSize == controller.selectedSize
+                  );
+
+                  if (index >= 0) {
+                    controller.updateCartItem(index);
+                  } else {
+                    controller.addToCart();
+                  }
                 } else {
 
                 }
